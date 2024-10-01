@@ -1,0 +1,38 @@
+
+def initialize_grid(n, m):
+    return [['Dirty' for _ in range(m)] for _ in range(n)] 
+
+
+def print_grid(grid):
+    for row in grid:
+        print(' | '.join(row))
+    print()
+
+
+def is_grid_clean(grid):
+    for row in grid:
+        if 'Dirty' in row:
+            return False
+    return True
+
+
+def vacuum_cleaner(grid, n, m):
+    for i in range(n):
+        for j in range(m):
+            print(f"Vacuum at position ({i},{j})")
+            if grid[i][j] == 'Dirty':
+                print(f"Cleaning cell ({i},{j})")
+                grid[i][j] = 'Clean'
+            print_grid(grid)  
+    
+    print("All cells are clean!")
+
+
+n, m = 7,7 
+grid = initialize_grid(n, m)
+
+print("Initial Grid:")
+print_grid(grid)
+
+
+vacuum_cleaner(grid, n, m)
