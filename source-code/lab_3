@@ -1,0 +1,61 @@
+from collections import deque
+GOAL_STATE = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 0]
+]
+MOVES = [
+    (-1, 0),  # Up
+    (1, 0),   # Down
+    (0, -1),  # Left
+    (0, 1)    # Right
+]
+def manhattan_distance(state):
+    distance = 0
+    for i in range(3):
+        for j in range(3):
+            if state[i][j] != 0:
+                goal_i, goal_j = divmod(state[i][j] - 1, 3)
+                distance += abs(i - goal_i) + abs(j - goal_j)
+    return distance
+def is_goal_state(state):
+    return state == GOAL_STATE
+def get_neighbors(state):
+    neighbors = []
+    for i in range(3):
+        for j in range(3):
+            if state[i][j] == 0:
+                for move in MOVES:
+                    new_i, new_j = i + move[0], j + move[1]
+                    if 0 <= new_i < 3 and 0 <= new_j < 3:
+                        new_state = [row[:] for row in state]
+                        new_state[i][j], new_state[new_i][new_j] = new_state[new_i][new_j], new_state[i][j]
+                        neighbors.append(new_state)
+    return neighbors
+def dfs(state):
+    queue = deque([(state, [state])])
+    visited = set()
+    while queue:
+        current_state, path = queue.popleft()
+        if is_goal_state(current_state):
+            return path
+        if tuple(map(tuple, current_state)) in visited:
+            continue
+        visited.add(tuple(map(tuple, current_state)))
+        for neighbor in get_neighbors(current_state):
+            queue.append((neighbor, path + [neighbor]))
+    return None
+initial_state = [
+    [4, 1, 3],
+    [7, 2, 6],
+    [5, 8, 0]
+]
+path = dfs(initial_state)
+if path:
+    print("Solution found:")
+    for state in path:
+        for row in state:
+            print(row)
+        print()
+else:
+    print("No solution found.")
