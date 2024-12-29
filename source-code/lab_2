@@ -1,38 +1,38 @@
+from collections import deque
 
-def initialize_grid(n, m):
-    return [['Dirty' for _ in range(m)] for _ in range(n)] 
+# State is represented as a 9-element tuple (0 is the empty space)
+goal_state = (1, 2, 3, 4, 5, 6, 7, 8, 0)
 
-
-def print_grid(grid):
-    for row in grid:
-        print(' | '.join(row))
-    print()
-
-
-def is_grid_clean(grid):
-    for row in grid:
-        if 'Dirty' in row:
-            return False
-    return True
-
-
-def vacuum_cleaner(grid, n, m):
-    for i in range(n):
-        for j in range(m):
-            print(f"Vacuum at position ({i},{j})")
-            if grid[i][j] == 'Dirty':
-                print(f"Cleaning cell ({i},{j})")
-                grid[i][j] = 'Clean'
-            print_grid(grid)  
+def bfs(start_state):
+    def get_neighbors(state):
+        neighbors = []
+        zero_pos = state.index(0)
+        moves = [(-1, 0), (1, 0), (0, -1), (0, 1)]  # up, down, left, right
+        row, col = divmod(zero_pos, 3)
+        for r, c in moves:
+            new_row, new_col = row + r, col + c
+            if 0 <= new_row < 3 and 0 <= new_col < 3:
+                new_pos = new_row * 3 + new_col
+                new_state = list(state)
+                new_state[zero_pos], new_state[new_pos] = new_state[new_pos], new_state[zero_pos]
+                neighbors.append(tuple(new_state))
+        return neighbors
     
-    print("All cells are clean!")
+    visited = set()
+    queue = deque([(start_state, [])])  # (state, path)
+    visited.add(start_state)
+    
+    while queue:
+        state, path = queue.popleft()
+        if state == goal_state:
+            return path
+        
+        for neighbor in get_neighbors(state):
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append((neighbor, path + [neighbor]))
+    return None  # no solution
 
-
-n, m = 7,7 
-grid = initialize_grid(n, m)
-
-print("Initial Grid:")
-print_grid(grid)
-
-
-vacuum_cleaner(grid, n, m)
+start = (1, 2, 3, 4, 0, 6, 7, 5, 8)  # Initial state
+solution = bfs(start)
+print("Solution path:", solution)
