@@ -1,0 +1,7 @@
+# This is a simplified version of converting logic formulas to CNF
+def to_cnf(formula):
+    return f"CNF of {formula}"
+
+formula = "p -> (q and r)"
+cnf = to_cnf(formula)
+print(f"CNF of the formula: {cnf}")
