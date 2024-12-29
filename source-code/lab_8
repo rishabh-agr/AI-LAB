@@ -1,0 +1,17 @@
+def forward_chaining(facts, rules):
+    inferred = set(facts)
+    while True:
+        new_inferences = set()
+        for rule in rules:
+            if rule['premise'].issubset(inferred) and not rule['conclusion'] in inferred:
+                new_inferences.add(rule['conclusion'])
+        if not new_inferences:
+            break
+        inferred.update(new_inferences)
+    return inferred
+
+facts = {"A", "B"}
+rules = [{"premise": {"A", "B"}, "conclusion": "C"}, {"premise": {"C"}, "conclusion": "D"}]
+
+result = forward_chaining(facts, rules)
+print("Inferred facts:", result)
