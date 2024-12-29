@@ -1,0 +1,16 @@
+import random
+
+# Hill Climbing to maximize the function f(x) = -x^2 + 4x
+def hill_climbing(start):
+    current = start
+    while True:
+        neighbors = [current - 1, current + 1]  # Neighboring positions
+        next_move = max(neighbors, key=lambda x: -x**2 + 4*x)  # Choose best neighbor
+        if -next_move**2 + 4*next_move <= -current**2 + 4*current:
+            break
+        current = next_move
+    return current
+
+start = random.randint(-10, 10)
+solution = hill_climbing(start)
+print(f"Starting point: {start}, Solution: {solution}")
