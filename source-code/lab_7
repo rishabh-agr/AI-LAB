@@ -1,0 +1,24 @@
+def unify(term1, term2):
+    if term1 == term2:
+        return {}
+    elif isinstance(term1, str) and isinstance(term2, str):
+        if term1.isupper() and term2.isupper():
+            return {term1: term2}
+        return {}
+    elif isinstance(term1, tuple) and isinstance(term2, tuple):
+        if len(term1) != len(term2):
+            return {}
+        substitution = {}
+        for t1, t2 in zip(term1, term2):
+            sub = unify(t1, t2)
+            if sub == {}:
+                return {}
+            substitution.update(sub)
+        return substitution
+    return {}
+
+# Example terms
+term1 = ("f", "X", "g")
+term2 = ("f", "a", "g")
+substitution = unify(term1, term2)
+print(f"Substitution: {substitution}")
