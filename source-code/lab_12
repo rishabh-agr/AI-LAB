@@ -1,0 +1,9 @@
+def entails(premises, conclusion):
+    if conclusion in premises:
+        return True
+    return False
+
+premises = {"A", "B"}
+conclusion = "A"
+result = entails(premises, conclusion)
+print(f"Entailment result: {result}")
