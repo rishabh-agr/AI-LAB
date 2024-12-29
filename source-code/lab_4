@@ -1,0 +1,27 @@
+def vacuum_cleaner(grid, start, goal):
+    directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]  # Right, Left, Down, Up
+    position = start
+    cleaned = set()
+
+    def clean(position):
+        if position not in cleaned:
+            cleaned.add(position)
+            print(f"Cleaning {position}")
+    
+    def move(position, direction):
+        return (position[0] + direction[0], position[1] + direction[1])
+
+    # Start cleaning
+    clean(position)
+    while position != goal:
+        for direction in directions:
+            new_position = move(position, direction)
+            if 0 <= new_position[0] < len(grid) and 0 <= new_position[1] < len(grid[0]):
+                clean(new_position)
+                position = new_position
+                break
+
+grid = [[0, 0], [0, 0]]
+start = (0, 0)
+goal = (1, 1)
+vacuum_cleaner(grid, start, goal)
