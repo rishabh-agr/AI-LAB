@@ -1,0 +1,20 @@
+def resolution(kb, query):
+    clauses = set(kb)
+    while True:
+        new_clauses = set()
+        for clause1 in clauses:
+            for clause2 in clauses:
+                if clause1 != clause2:
+                    # Resolve the two clauses if they have complementary literals
+                    new_clause = clause1.union(clause2)
+                    if len(new_clause) == 0:
+                        return True  # Empty clause found, the query is entailed
+                    new_clauses.add(new_clause)
+        if not new_clauses:
+            return False
+        clauses.update(new_clauses)
+
+kb = [{"A", "B"}, {"B", "C"}]
+query = {"A", "C"}
+result = resolution(kb, query)
+print(f"Query {query} is {'entailed' if result else 'not entailed'} by the knowledge base.")
