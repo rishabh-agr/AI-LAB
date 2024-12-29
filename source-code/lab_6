@@ -1,0 +1,22 @@
+import random
+import math
+
+def simulated_annealing(start, temperature, cooling_rate):
+    current = start
+    best = current
+    while temperature > 1:
+        neighbor = current + random.choice([-1, 1])
+        energy_current = -current**2 + 4*current
+        energy_neighbor = -neighbor**2 + 4*neighbor
+        if energy_neighbor > energy_current or random.random() < math.exp((energy_current - energy_neighbor) / temperature):
+            current = neighbor
+            if energy_neighbor > -best**2 + 4*best:
+                best = neighbor
+        temperature *= cooling_rate
+    return best
+
+start = random.randint(-10, 10)
+temperature = 10000
+cooling_rate = 0.995
+solution = simulated_annealing(start, temperature, cooling_rate)
+print(f"Starting point: {start}, Solution: {solution}")
